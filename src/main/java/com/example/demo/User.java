@@ -2,10 +2,20 @@ package com.example.demo;
 
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 //import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
+@Entity()
+@Table(name = "Users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
@@ -22,6 +32,10 @@ public class User {
         this.password_hash = password_hash;
         
     } 
+
+    public User() {
+        
+    }
 
 
     /**
