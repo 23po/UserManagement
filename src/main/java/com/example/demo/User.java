@@ -1,8 +1,16 @@
 package com.example.demo;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity()
 @Table(name = "Users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +30,17 @@ public class User {
 
     private String email;
 
-    private String password_hash;
+    private String password;
 
-    public User(Long id, String username, String email, String password_hash) {
+    @Enumerated(EnumType.STRING)
+    private Role role; 
+
+    public User(Long id, String username, String email, String password) {
 
         this.id = id;
         this.username = username;
         this.email = email;
-        this.password_hash = password_hash;
+        this.password = password;
         
     } 
 
@@ -83,15 +94,15 @@ public class User {
     /**
      * @return String return the password_hash
      */
-    public String getPassword_hash() {
-        return password_hash;
-    }
+    // public String getPassword() {
+    //     return password;
+    // }
 
     /**
      * @param password_hash the password_hash to set
      */
-    public void setPassword_hash(String password_hash) {
-        this.password_hash = password_hash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
   @Override
@@ -100,7 +111,7 @@ public class User {
            "id=" + id +
            ", username ='" + username + '\'' +
            ", email=' " + email + '\'' +
-           ", password_hash='" + password_hash + '\'' +
+           ", password_hash='" + password + '\'' +
            '}';         
   }
 
@@ -110,7 +121,7 @@ public class User {
     result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((id == null) ? 0 : username.hashCode());
     result = prime * result + ((id == null) ? 0 : email.hashCode());
-    result = prime * result + ((id == null) ? 0 : password_hash.hashCode());
+    result = prime * result + ((id == null) ? 0 : password.hashCode());
 
     return result;
   }
@@ -124,7 +135,48 @@ public boolean equals(Object obj) {
     return Objects.equals(id, otherUser.id) &&
            Objects.equals(username, otherUser.username) &&
            Objects.equals(email, otherUser.email) &&
-           Objects.equals(password_hash, otherUser.password_hash);
+           Objects.equals(password, otherUser.password);
+}
+
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities() {
+    // TODO Auto-generated method stub
+    //throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+    return List.of(new SimpleGrantedAuthority(role.name()));
+}
+
+@Override
+public String getPassword() {
+    // TODO Auto-generated method stub
+    //throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+    
+}
+
+@Override
+public boolean isAccountNonExpired() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'isAccountNonExpired'");
+}
+
+@Override
+public boolean isAccountNonLocked() {
+    // TODO Auto-generated method stub
+    //throw new UnsupportedOperationException("Unimplemented method 'isAccountNonLocked'");
+    return true;
+}
+
+@Override
+public boolean isCredentialsNonExpired() {
+    // TODO Auto-generated method stub
+    //throw new UnsupportedOperationException("Unimplemented method 'isCredentialsNonExpired'");
+    return true;
+}
+
+@Override
+public boolean isEnabled() {
+    // TODO Auto-generated method stub
+    //throw new UnsupportedOperationException("Unimplemented method 'isEnabled'");
+    return true;
 }
 
 
