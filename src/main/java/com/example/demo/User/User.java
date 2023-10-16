@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.User;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,9 +15,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 //import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity()
 @Table(name = "Users")
 public class User implements UserDetails {
@@ -35,18 +43,18 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role; 
 
-    public User(Long id, String username, String email, String password) {
+    // public User(Long id, String username, String email, String password) {
 
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    //     this.id = id;
+    //     this.username = username;
+    //     this.email = email;
+    //     this.password = password;
         
-    } 
+    // } 
 
-    public User() {
+    // public User() {
         
-    }
+    // }
 
 
     /**
@@ -149,13 +157,14 @@ public Collection<? extends GrantedAuthority> getAuthorities() {
 public String getPassword() {
     // TODO Auto-generated method stub
     //throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
-    
+    return password;
 }
 
 @Override
 public boolean isAccountNonExpired() {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'isAccountNonExpired'");
+   // throw new UnsupportedOperationException("Unimplemented method 'isAccountNonExpired'");
+return true;
 }
 
 @Override
