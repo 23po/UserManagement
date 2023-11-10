@@ -2,16 +2,17 @@ package com.example.demo.account;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class Account {
 
     Long accountId;
-
     Long userId;
-    Integer balance;
+    BigDecimal balance;
     String currency;
 
-    public Account(Long accountId, Long userId, Integer balance, String currency) {
+    public Account(Long accountId, Long userId, BigDecimal balance, String currency) {
 
         this.userId = userId;
         this.accountId = accountId;
