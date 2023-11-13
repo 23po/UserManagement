@@ -17,9 +17,9 @@ public class AccountController {
  @Autowired AccountService accountService;
 
     @PostMapping("/create")
-    public ResponseEntity<Account> createAccount(Request request) {
+    public ResponseEntity<Account> createAccount(@RequestBody Request request) {
 
-       Account newAccount = accountService.createAccount(request);
+        Account newAccount = accountService.createAccount(request);
 
         return new ResponseEntity<>(newAccount, HttpStatus.CREATED);
     }
