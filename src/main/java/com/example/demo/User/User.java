@@ -1,5 +1,6 @@
 package com.example.demo.User;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -43,18 +44,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role; 
 
-    // public User(Long id, String username, String email, String password) {
+    public BigDecimal balance;
 
-    //     this.id = id;
-    //     this.username = username;
-    //     this.email = email;
-    //     this.password = password;
-        
-    // } 
-
-    // public User() {
-        
-    // }
 
 
     /**
