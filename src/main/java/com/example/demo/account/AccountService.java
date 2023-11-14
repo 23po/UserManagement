@@ -12,10 +12,13 @@ public class AccountService {
 
         Account newAccount = new Account();
 
+        System.out.println(request);
+
         newAccount.setUsername(request.username);
 
         return accountRepository.save(newAccount);
     }
+
 
 
 }

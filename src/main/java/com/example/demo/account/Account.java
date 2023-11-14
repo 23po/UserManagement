@@ -17,7 +17,7 @@ public class Account {
     Long accountId;
     Long userId;
     String username;
-    BigDecimal balance;
+    BigDecimal balance = BigDecimal.ZERO;
     String currency;
 
     public Account(Long accountId, Long userId, String username, BigDecimal balance, String currency) {
