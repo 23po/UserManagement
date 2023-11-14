@@ -1,8 +1,10 @@
 package com.example.demo.Transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,18 +19,38 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping("/send")
-    public ResponseEntity<String> send(@RequestParam Long senderUserId,
-                                       @RequestParam Long recipientUserId,
-                                       @RequestParam BigDecimal amount) {
+    public ResponseEntity<Transaction> send(@RequestBody Transaction request) {
 
         try {
 
-            transactionService.sendMoney(senderUserId, recipientUserId, amount);
-            return ResponseEntity.ok("success");
+           Transaction response = transactionService.sendMoney(request);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @PostMapping("/gift")
+    public ResponseEntity<Transaction> giftMe (@RequestBody Transaction request) {
+
+        return ResponseEntity.ok().body(transactionService.giftMoney(request));
+
+    } 
+
+
+    /**
+     * @return TransactionService return the transactionService
+     */
+    public TransactionService getTransactionService() {
+        return transactionService;
+    }
+
+    /**
+     * @param transactionService the transactionService to set
+     */
+    public void setTransactionService(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
 }
