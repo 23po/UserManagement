@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -43,7 +44,7 @@ public class TransactionService {
         request.getRecipientUserId();
         
        
-        Optional <Account> potentialAccount = accountRepository.findById(request.getRecipientUserId()); 
+       Optional <Account> potentialAccount = accountRepository.findById(request.getRecipientUserId()); 
 
        Account account = potentialAccount.isPresent() ? potentialAccount.get() : null;
  
@@ -59,10 +60,11 @@ public class TransactionService {
    
     }
 
-    public Transaction giftMoney(Transaction request) {
-
+    public Transaction giftMoney(Long userId) {
      
-     Optional <Account> potentialAccount = accountRepository.findById(request.getSenderUserId());
+     Transaction gift = new Transaction();
+
+     Optional <Account> potentialAccount = accountRepository.findById(userId);
 
      Account account = new Account();
 
@@ -71,12 +73,17 @@ public class TransactionService {
     }
 
  //need to understand this BigDecimal bette   
-account.setBalance(account.getBalance().add(BigDecimal.valueOf(500)));
+     account.setBalance(account.getBalance().add(BigDecimal.valueOf(500)));
 
      accountRepository.save(account);
 
+     gift.setRecipientUserId(userId);
+     gift.setTimestamp(LocalDateTime.now());
+
+     log.info("new balance {}", account.getBalance());
+
      //on success
-     return transactionRepository.save(request);
+     return transactionRepository.save(gift);
 
 } 
 
@@ -97,7 +104,7 @@ account.setBalance(account.getBalance().add(BigDecimal.valueOf(500)));
             Optional <Account> optionalRecieverAccount = accountRepository.findById(request.getRecipientUserId()); // Validation, deduction, addition, and recording steps using BigDecimal
 
         if (optionalSenderAccount.isPresent()) {
-            senderAccount = optionalRecieverAccount.get();
+            senderAccount = optionalSenderAccount.get();
         } 
 
         if (optionalRecieverAccount.isPresent()) {
@@ -119,7 +126,8 @@ account.setBalance(account.getBalance().add(BigDecimal.valueOf(500)));
                 accountRepository.save(senderAccount); // Update the sender's account
 
                 recieverAccount.setBalance(recieverAccount.getBalance().add(request.getAmount()));
-                
+                 
+                log.info("new balance {}", recieverAccount.getBalance());
                 //updated recipieint account 
                 Account account = accountRepository.save(recieverAccount);
 
@@ -143,7 +151,8 @@ account.setBalance(account.getBalance().add(BigDecimal.valueOf(500)));
             // Handle exceptions and roll back the transaction if needed
             log.info("Some exception {}",e);
         }
-
+        
+        log.info("new balance {}", recieverAccount.getBalance());
         return response;
     }
 

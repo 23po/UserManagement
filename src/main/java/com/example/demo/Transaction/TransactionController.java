@@ -3,6 +3,7 @@ package com.example.demo.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,10 +32,10 @@ public class TransactionController {
 
     }
 
-    @PostMapping("/gift")
-    public ResponseEntity<Transaction> giftMe (@RequestBody Transaction request) {
+    @PostMapping("/gift/{userId}")
+    public ResponseEntity<Transaction> giftMe (@PathVariable Long userId) {
 
-        return ResponseEntity.ok().body(transactionService.giftMoney(request));
+        return ResponseEntity.ok().body(transactionService.giftMoney(userId));
 
     } 
 
