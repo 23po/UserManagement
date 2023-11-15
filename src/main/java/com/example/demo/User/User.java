@@ -5,17 +5,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import com.example.demo.account.Account;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +28,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     private String username;
 
@@ -42,7 +37,11 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role; 
+    private Role role;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    //  //@JoinColumn(name="userId")
+   private Account account;
 
     public BigDecimal balance;
 
@@ -52,14 +51,14 @@ public class User implements UserDetails {
      * @return Long return the id
      */
     public Long getId() {
-        return id;
+        return userId;
     }
 
     /**
      * @param id the id to set
      */
     public void setId(Long id) {
-        this.id = id;
+        this.userId = id;
     }
 
     /**
@@ -107,7 +106,7 @@ public class User implements UserDetails {
   @Override
   public String toString() {
     return "User{" +
-           "id=" + id +
+           "id=" + userId +
            ", username ='" + username + '\'' +
            ", email=' " + email + '\'' +
            ", password_hash='" + password + '\'' +
@@ -117,10 +116,10 @@ public class User implements UserDetails {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((id == null) ? 0 : username.hashCode());
-    result = prime * result + ((id == null) ? 0 : email.hashCode());
-    result = prime * result + ((id == null) ? 0 : password.hashCode());
+    result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+    result = prime * result + ((userId == null) ? 0 : username.hashCode());
+    result = prime * result + ((userId == null) ? 0 : email.hashCode());
+    result = prime * result + ((userId == null) ? 0 : password.hashCode());
 
     return result;
   }
@@ -131,7 +130,7 @@ public boolean equals(Object obj) {
     if (obj == null || getClass() != obj.getClass()) return false;
 
     User otherUser = (User) obj;
-    return Objects.equals(id, otherUser.id) &&
+    return Objects.equals(userId, otherUser.userId) &&
            Objects.equals(username, otherUser.username) &&
            Objects.equals(email, otherUser.email) &&
            Objects.equals(password, otherUser.password);
