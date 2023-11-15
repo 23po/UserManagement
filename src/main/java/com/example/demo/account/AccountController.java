@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
+import com.example.demo.User.User;
+
 
 @RestController
 @RequestMapping("api/v1/account/")
@@ -17,9 +18,9 @@ public class AccountController {
  @Autowired AccountService accountService;
 
     @PostMapping("/create")
-    public ResponseEntity<Account> createAccount(@RequestBody Request request) {
+    public ResponseEntity<Account> createAccount(@RequestBody User user) {
 
-        Account newAccount = accountService.createAccount(request);
+        Account newAccount = accountService.createAccount(user);
 
         return new ResponseEntity<>(newAccount, HttpStatus.CREATED);
     }
